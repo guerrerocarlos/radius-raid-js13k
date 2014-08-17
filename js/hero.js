@@ -179,24 +179,28 @@ $.Hero.prototype.render = function() {
         } else {
             var fillStyle = this.fillStyle;
         }
+
         $.ctxmg.save();
         $.ctxmg.translate( this.x, this.y );
         $.ctxmg.rotate( this.direction - $.pi / 4 );
         $.ctxmg.fillStyle = fillStyle;
         $.ctxmg.fillRect( 0, 0, this.radius, this.radius );
         $.ctxmg.restore();
+
         $.ctxmg.save();
         $.ctxmg.translate( this.x, this.y );	
         $.ctxmg.rotate( this.direction - $.pi / 4 + $.twopi / 3 );
         $.ctxmg.fillStyle = fillStyle;
         $.ctxmg.fillRect( 0, 0, this.radius, this.radius );
         $.ctxmg.restore();
+
         $.ctxmg.save();
         $.ctxmg.translate( this.x, this.y );	
         $.ctxmg.rotate( this.direction - $.pi / 4 - $.twopi / 3 );
         $.ctxmg.fillStyle = fillStyle;
         $.ctxmg.fillRect( 0, 0, this.radius, this.radius );
         $.ctxmg.restore();
+
         $.util.fillCircle( $.ctxmg, this.x, this.y, this.radius - 3, fillStyle );
-    }
+    }	
 };

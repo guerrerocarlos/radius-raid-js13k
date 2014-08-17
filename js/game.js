@@ -18,7 +18,7 @@ $.init = function() {
     $.ctxmg = $.cmg.getContext( '2d' );
     $.ctxfg = $.cfg.getContext( '2d' );
     $.cw = $.cmg.width = $.cfg.width = 1200;
-    $.ch = $.cmg.height = $.cfg.height = 600;
+    $.ch = $.cmg.height = $.cfg.height = 400;
     $.wrap.style.width = $.wrapInner.style.width = $.cw + 'px';
     $.wrap.style.height = $.wrapInner.style.height = $.ch + 'px';
     $.wrap.style.marginLeft = ( -$.cw / 2 ) - 10 + 'px';
@@ -41,7 +41,7 @@ $.init = function() {
 
     $.mute = $.storage['mute'];
     $.autofire = $.storage['autofire'];
-    $.slowEnemyDivider = 3;	
+    $.slowEnemyDivider = 3;
 
     $.keys = {
         state: {
@@ -84,9 +84,9 @@ $.init = function() {
         color: 'hsla(0, 0%, 0%, 0.85)',
         strokeColor: '#3a3a3a'
     },
-    $.cOffset = { 
-        left: 0, 
-        top: 0 
+    $.cOffset = {
+        left: 0,
+        top: 0
     };
     
     $.levelCount = $.definitions.levels.length;
@@ -95,7 +95,7 @@ $.init = function() {
     $.enemies = [];
     $.bullets = [];
     $.explosions = [];
-    $.powerups = [];	
+    $.powerups = [];
     $.particleEmitters = [];
     $.textPops = [];
     $.levelPops = [];
@@ -189,19 +189,19 @@ $.renderFavicon = function() {
         favc = document.createElement( 'canvas' ),
         favctx = favc.getContext( '2d' ),
         faviconGrid = [
-            [ 1, 1, 1, 1, 1,  ,  , 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
+            [ 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ],
             [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
             [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1, 1, 1, 1,  , 0 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1, 1, 1, 1,  , 0 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [ 1,  ,  ,  ,  , 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
-            [  ,  , 1, 1, 1, 1, 1,  ,  , 1, 1,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1,  , 0 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 0 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
+            [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
             [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
             [ 1,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  ,  , 1 ],
             [ 1, 1, 1, 1, 1, 1, 1, 1, 1,  ,  , 1, 1, 1, 1, 1 ]
