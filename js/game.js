@@ -36,7 +36,7 @@ $.init = function() {
 
     $.screen = {
         x: ( $.ww - $.cw ) / -2,
-        y: ( $.wh - $.ch ) / -2
+        y: ( $.wh - $.ch ) * 0.1
     };
 
     $.mute = $.storage['mute'];
@@ -266,35 +266,6 @@ $.renderBackground4 = function() {
         $.ctxbg4.fillRect( i * size, 0, 1, $.cbg4.height );
     }
 }
-
-/*==============================================================================
-Render Foreground
-==============================================================================*/
-$.renderForeground = function() {
-    var gradient = $.ctxfg.createRadialGradient( $.cw / 2, $.ch / 2, $.ch / 3, $.cw / 2, $.ch / 2, $.ch );
-    gradient.addColorStop( 0, 'hsla(0, 0%, 0%, 0)' );
-    gradient.addColorStop( 1, 'hsla(0, 0%, 0%, 0.5)' );
-    $.ctxfg.fillStyle = gradient;
-    $.ctxfg.fillRect( 0, 0, $.cw, $.ch );
-
-    $.ctxfg.fillStyle = 'hsla(0, 0%, 50%, 0.1)';
-    var i = Math.round( $.ch / 2 );
-    while( i-- ) {
-        $.ctxfg.fillRect( 0, i * 2, $.cw, 1 );
-    }
-
-    var gradient2 = $.ctxfg.createLinearGradient( $.cw, 0, 0, $.ch );
-    gradient2.addColorStop( 0, 'hsla(0, 0%, 100%, 0.04)' );
-    gradient2.addColorStop( 0.75, 'hsla(0, 0%, 100%, 0)' );
-    $.ctxfg.beginPath();
-    $.ctxfg.moveTo( 0, 0 );
-    $.ctxfg.lineTo( $.cw, 0 );
-    $.ctxfg.lineTo( 0, $.ch );
-    $.ctxfg.closePath();
-    $.ctxfg.fillStyle = gradient2;
-    $.ctxfg.fill();
-}
-
 /*==============================================================================
 User Interface / UI / GUI / Minimap
 ==============================================================================*/
