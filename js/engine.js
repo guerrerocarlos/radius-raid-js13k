@@ -32,14 +32,14 @@ $.init = function(){
     $.wh = Math.floor( $.ch * 1.5 );
     $.cbg1s.width = $.cbg1.width = Math.floor( $.cw * 1.05 );
     $.cbg1s.height = $.cbg1.height = Math.floor( $.ch * 1.4 );
-    $.cbg2s.width = $.cbg2.width = Math.floor( $.cw * 1.1 );
+    $.cbg2s.width = $.cbg2.width = Math.floor( $.cw * 1.3 );
     $.cbg2s.height = $.cbg2.height = Math.floor( $.ch * 1.6 );
-    $.cbg3s.width = $.cbg3.width = Math.floor( $.cw * 1.15 );
+    $.cbg3s.width = $.cbg3.width = Math.floor( $.cw * 1.4 );
     $.cbg3s.height = $.cbg3.height = Math.floor( $.ch * 1.8 );
-    $.cbg4s.width = $.cbg4.width = Math.floor( $.cw * 1.2 );
+    $.cbg4s.width = $.cbg4.width = Math.floor( $.cw * 1.6 );
     $.cbg4s.height = $.cbg4.height = Math.floor( $.ch * 2 );
     $.goingNorth = 0
-    $.spaceSpeed = 1
+    $.spaceSpeed = 2
 
     $.screen = {
         x: ( $.ww - $.cw ) / -2,
@@ -261,11 +261,11 @@ $.renderBackground2 = function() {
 $.renderBackground3 = function() {
     var i = 400;
     while( i-- ) {
-        $.util.fillCircle( $.ctxbg3, $.util.rand( 0, $.cbg3.width ), $.util.rand( 0, $.cbg3.height ), $.util.rand( 1, 2.5 ), 'hsla(0, 0%, 100%, ' + $.util.rand( 0.05, 0.1 ) + ')' );
+        $.util.fillCircle( $.ctxbg3, $.util.rand( 0, $.cbg3.width ), $.util.rand( 0, $.cbg3.height ), $.util.rand( 1, 2.5 ), 'hsla(0, 0%, 100%, ' + $.util.rand( 0.15, 0.2 ) + ')' );
     }
     var i = 400;
     while( i-- ) {
-        $.util.fillCircle( $.ctxbg3s, $.util.rand( 0, $.cbg3.width ), $.util.rand( 0, $.cbg3.height ), $.util.rand( 1, 2.5 ), 'hsla(0, 0%, 100%, ' + $.util.rand( 0.05, 0.1 ) + ')' );
+        $.util.fillCircle( $.ctxbg3s, $.util.rand( 0, $.cbg3.width ), $.util.rand( 0, $.cbg3.height ), $.util.rand( 1, 2.5 ), 'hsla(0, 0%, 100%, ' + $.util.rand( 0.15, 0.2 ) + ')' );
     }
 
 }
