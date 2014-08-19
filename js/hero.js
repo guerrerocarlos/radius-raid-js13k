@@ -6,14 +6,15 @@ $.Hero = function() {
     this.y = $.wh * 0.95 ;
     this.vx = 0;
     this.vy = 0;
-    this.vmax = 4;
-    this.vmax = 6;
+    this.vmax = 20;
     this.direction = 0;
-    this.accel = 0.5;
+    this.accel = 2;
     this.radius = 10;
     this.life = 1;
     this.takingDamage = 0;
     this.fillStyle = '#fff';
+    this.width = 400;
+    this.numCannons = 8;
     this.weapon = {
         fireRate: 5,
         fireRateTick: 5,
@@ -35,21 +36,11 @@ $.Hero = function() {
 Update
 ==============================================================================*/
 $.Hero.prototype.update = function() {
+    $.fireArray = [$.keys.state.a,$.keys.state.s,$.keys.state.d,$.keys.state.f,$.keys.state.h,$.keys.state.j,$.keys.state.k,$.keys.state.l]
     if( this.life > 0 ) {
         /*==============================================================================
         Apply Forces
         ==============================================================================*/
-        if( $.keys.state.up ) {
-            this.vy -= this.accel * $.dt;
-            if( this.vy < -this.vmax ) {
-                this.vy = -this.vmax;
-            }
-        } else if( $.keys.state.down ) {
-            this.vy += this.accel * $.dt;
-            if( this.vy > this.vmax ) {
-                this.vy = this.vmax;
-            }
-        }
         if( $.keys.state.left ) {
             this.vx -= this.accel * $.dt;
             if( this.vx < -this.vmax ) {
@@ -68,11 +59,11 @@ $.Hero.prototype.update = function() {
         /*==============================================================================
         Lock Bounds
         ==============================================================================*/
-        if( this.x >= $.ww - this.radius ) {
-            this.x = $.ww - this.radius;
+        if( this.x >= $.ww - this.width/2-20) {
+            this.x = $.ww - this.width/2-20;
         }
-        if( this.x <= this.radius ) {
-            this.x = this.radius;
+        if( this.x <= this.width/2+20) {
+            this.x = this.width/2+20;
         }
         if( this.y >= $.wh - this.radius ) {
             this.y = $.wh - this.radius;
@@ -92,11 +83,11 @@ $.Hero.prototype.update = function() {
         if( this.weapon.fireRateTick < this.weapon.fireRate ){
             this.weapon.fireRateTick += $.dt;
         } else {
-            if( $.autofire || ( !$.autofire && $.mouse.down ) ){
+            if( $.autofire || ( !$.autofire && $.mouse.down ) || $.fireArray.indexOf(1)>-1 ){
                 $.audio.play( 'shoot' );
-                if( $.powerupTimers[ 2 ] > 0 || $.powerupTimers[ 3 ] > 0 || $.powerupTimers[ 4 ] > 0) {
-                    $.audio.play( 'shootAlt' );
-                }
+                //if( $.powerupTimers[ 2 ] > 0 || $.powerupTimers[ 3 ] > 0 || $.powerupTimers[ 4 ] > 0) {
+                //    $.audio.play( 'shootAlt' );
+                //}
                 this.weapon.fireRateTick = this.weapon.fireRateTick - this.weapon.fireRate;
                 this.weapon.fireFlag = 6;
                 if( this.weapon.count > 1 ) {
@@ -107,28 +98,34 @@ $.Hero.prototype.update = function() {
                     var spreadStep = 0;
                 }
                 var gunX = this.x + Math.cos( this.direction ) * ( this.radius + this.weapon.bullet.size );
+                var gunX = this.x
                 var gunY = this.y + Math.sin( this.direction ) * ( this.radius + this.weapon.bullet.size );
-                for( var i = 0; i < this.weapon.count; i++ ) {
-                    $.bulletsFired++;
-                    var color = this.weapon.bullet.strokeStyle;
-                    if( $.powerupTimers[ 2 ] > 0 || $.powerupTimers[ 3 ] > 0 || $.powerupTimers[ 4 ] > 0) {
-                        var colors = [];
-                        if( $.powerupTimers[ 2 ] > 0 ) { colors.push( 'hsl(' + $.definitions.powerups[ 2 ].hue + ', ' + $.definitions.powerups[ 2 ].saturation + '%, ' + $.definitions.powerups[ 2 ].lightness + '%)' ); }
-                        if( $.powerupTimers[ 3 ] > 0 ) { colors.push( 'hsl(' + $.definitions.powerups[ 3 ].hue + ', ' + $.definitions.powerups[ 3 ].saturation + '%, ' + $.definitions.powerups[ 3 ].lightness + '%)' ); }
-                        if( $.powerupTimers[ 4 ] > 0 ) { colors.push( 'hsl(' + $.definitions.powerups[ 4 ].hue + ', ' + $.definitions.powerups[ 4 ].saturation + '%, ' + $.definitions.powerups[ 4 ].lightness + '%)' ); }
-                        color = colors[ Math.floor( $.util.rand( 0, colors.length ) ) ];
+                var gunY = this.y
+                for(i=-4 ; i<4 ; i++){
+                    if($.fireArray[i+4]==1){
+                        //for( var i = 0; i < this.weapon.count; i++ ) {
+                            $.bulletsFired++;
+                            var color = this.weapon.bullet.strokeStyle;
+                            //if( $.powerupTimers[ 2 ] > 0 || $.powerupTimers[ 3 ] > 0 || $.powerupTimers[ 4 ] > 0) {
+                            //    var colors = [];
+                            //    if( $.powerupTimers[ 2 ] > 0 ) { colors.push( 'hsl(' + $.definitions.powerups[ 2 ].hue + ', ' + $.definitions.powerups[ 2 ].saturation + '%, ' + $.definitions.powerups[ 2 ].lightness + '%)' ); }
+                            //    if( $.powerupTimers[ 3 ] > 0 ) { colors.push( 'hsl(' + $.definitions.powerups[ 3 ].hue + ', ' + $.definitions.powerups[ 3 ].saturation + '%, ' + $.definitions.powerups[ 3 ].lightness + '%)' ); }
+                            //    if( $.powerupTimers[ 4 ] > 0 ) { colors.push( 'hsl(' + $.definitions.powerups[ 4 ].hue + ', ' + $.definitions.powerups[ 4 ].saturation + '%, ' + $.definitions.powerups[ 4 ].lightness + '%)' ); }
+                            //    color = colors[ Math.floor( $.util.rand( 0, colors.length ) ) ];
+                            //}
+                            $.bullets.push( new $.Bullet( {
+                                x: gunX+this.width/8*i+this.width/8/2,
+                                y: gunY,
+                                speed: this.weapon.bullet.speed,
+                                direction: -$.pi/2+(i+0.5)*$.pi/16,//this.direction + spreadStart + i * spreadStep,
+                                damage: this.weapon.bullet.damage,
+                                size: this.weapon.bullet.size,
+                                lineWidth: this.weapon.bullet.lineWidth,
+                                strokeStyle: color,
+                                piercing: this.weapon.bullet.piercing
+                            } ) );
+                        //}
                     }
-                    $.bullets.push( new $.Bullet( {
-                        x: gunX,
-                        y: gunY,
-                        speed: this.weapon.bullet.speed,
-                        direction: this.direction + spreadStart + i * spreadStep,
-                        damage: this.weapon.bullet.damage,
-                        size: this.weapon.bullet.size,
-                        lineWidth: this.weapon.bullet.lineWidth,
-                        strokeStyle: color,
-                        piercing: this.weapon.bullet.piercing
-                    } ) );
                 }
             }
         }
@@ -179,7 +176,53 @@ $.Hero.prototype.render = function() {
         } else {
             var fillStyle = this.fillStyle;
         }
+        var fillStyle2 = 'hsla(40, 40%, ' + $.util.rand( 0, 100 ) + '%, 1)';
+        var fillStyleWhite = 'hsla(40, 40%, 100%, 1)';
 
+        $.ctxmg.save()
+        $.ctxmg.beginPath()
+        // Set faux rounded corners
+        $.ctxmg.fillStyle = fillStyleWhite
+        $.ctxmg.strokeStyle = fillStyleWhite
+        $.ctxmg.lineJoin = "round";
+        $.ctxmg.lineWidth = 5
+        $.ctxmg.moveTo(this.x-8-5-(this.width/2),this.y+0)
+        $.ctxmg.lineTo(this.x-5-(this.width/2),this.y+0)
+        $.ctxmg.lineTo(this.x-(this.width/2),this.y+18)
+        $.ctxmg.lineTo(this.x+this.width/2,this.y+18)
+        $.ctxmg.lineTo(this.x+this.width/2+5,this.y+0)
+        $.ctxmg.lineTo(this.x+this.width/2+5+8,this.y+0)
+        $.ctxmg.lineTo(this.x+this.width/2+5+8,this.y+25)
+        $.ctxmg.lineTo(this.x-8-5-(this.width/2),this.y+25)
+        $.ctxmg.fillStyle = fillStyleWhite
+        $.ctxmg.closePath()
+        $.ctxmg.stroke()
+        $.ctxmg.fill()
+        $.ctxmg.restore();
+        for(i=-4;i<4;i++){
+            $.ctxmg.save()
+            //if($.fireArray[-i+3])
+            //    $.ctxmg.fillStyle = fillStyle
+            //$.ctxmg.translate( this.x-this.width/2/8-1.5, this.y );
+            //$.ctxmg.translate( this.x, this.y );
+            //$.ctxmg.rotate( -$.pi/16-$.pi/32*i );
+            //$.ctxmg.fillStyle = fillStyle2
+            //$.ctxmg.fillRect(0-this.width/8*i ,3,4,10)
+            var newx = this.x + this.width/8*i + this.width/8/2
+            $.ctxmg.lineJoin = "round";
+            $.ctxmg.lineWidth = 2
+            $.ctxmg.moveTo( newx - 2 , this.y - (i+0.5)*0.2)
+            $.ctxmg.lineTo( newx + 2 , this.y + (i+0.5)*0.2)
+            $.ctxmg.lineTo( newx + 2 + (i+0.5)*-3, this.y + 14)
+            $.ctxmg.lineTo( newx - 2 + (i+0.5)*-3, this.y + 14)
+            $.ctxmg.closePath()
+            $.ctxmg.fill()
+            //$.ctxmg.rotate( +$.pi/16+$.pi/32*i );
+            $.ctxmg.restore()
+        }
+        $.util.fillCircle( $.ctxmg, this.x, this.y+18, this.radius - 3, fillStyleWhite );
+
+        /*
         $.ctxmg.save();
         $.ctxmg.translate( this.x, this.y );
         $.ctxmg.rotate( this.direction - $.pi / 4 );
@@ -188,19 +231,20 @@ $.Hero.prototype.render = function() {
         $.ctxmg.restore();
 
         $.ctxmg.save();
-        $.ctxmg.translate( this.x, this.y );	
+        $.ctxmg.translate( this.x, this.y );
         $.ctxmg.rotate( this.direction - $.pi / 4 + $.twopi / 3 );
         $.ctxmg.fillStyle = fillStyle;
         $.ctxmg.fillRect( 0, 0, this.radius, this.radius );
         $.ctxmg.restore();
 
         $.ctxmg.save();
-        $.ctxmg.translate( this.x, this.y );	
+        $.ctxmg.translate( this.x, this.y );
         $.ctxmg.rotate( this.direction - $.pi / 4 - $.twopi / 3 );
         $.ctxmg.fillStyle = fillStyle;
         $.ctxmg.fillRect( 0, 0, this.radius, this.radius );
         $.ctxmg.restore();
 
         $.util.fillCircle( $.ctxmg, this.x, this.y, this.radius - 3, fillStyle );
+        */
     }	
 };

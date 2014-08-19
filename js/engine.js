@@ -30,7 +30,7 @@ $.init = function(){
 
     $.ww = Math.floor( $.cw * 1.5 );
     $.wh = Math.floor( $.ch * 1.5 );
-    $.cbg1s.width = $.cbg1.width = Math.floor( $.cw * 1.05 );
+    $.cbg1s.width = $.cbg1.width = Math.floor( $.cw * 1.2 );
     $.cbg1s.height = $.cbg1.height = Math.floor( $.ch * 1.4 );
     $.cbg2s.width = $.cbg2.width = Math.floor( $.cw * 1.3 );
     $.cbg2s.height = $.cbg2.height = Math.floor( $.ch * 1.6 );
@@ -39,7 +39,7 @@ $.init = function(){
     $.cbg4s.width = $.cbg4.width = Math.floor( $.cw * 1.6 );
     $.cbg4s.height = $.cbg4.height = Math.floor( $.ch * 2 );
     $.goingNorth = 0
-    $.spaceSpeed = 2
+    $.spaceSpeed = 1.5
 
     $.screen = {
         x: ( $.ww - $.cw ) / -2,
@@ -48,24 +48,38 @@ $.init = function(){
 
     $.states = {};
     $.enemies = [];
+    $.bullets = [];
+    $.particleEmitters = [];
     $.keys = {
         state: {
             up: 0,
             down: 0,
             left: 0,
             right: 0,
+            a: 0,
+            s: 0,
+            d: 0,
             f: 0,
-            m: 0,
-            p: 0
+            g: 0,
+            h: 0,
+            j: 0,
+            k: 0,
+            l: 0
         },
         pressed: {
             up: 0,
             down: 0,
             left: 0,
             right: 0,
+            a: 0,
+            s: 0,
+            d: 0,
             f: 0,
-            m: 0,
-            p: 0
+            g: 0,
+            h: 0,
+            j: 0,
+            k: 0,
+            l: 0
         }
     };
     $.mouse = {
@@ -304,13 +318,80 @@ $.setupStates = function(){
 
         $.ctxmg.save()
         $.ctxmg.translate( $.screen.x - $.rumble.x, $.screen.y - $.rumble.y );
+        var i = $.bullets.length; while( i-- ){ $.bullets[ i ].update( i ) }
+        var i = $.bullets.length; while( i-- ){ $.bullets[ i ].render( i ) }
+        var i = $.enemies.length; while( i-- ){ $.enemies[ i ].update( i ) }
+        var i = $.enemies.length; while( i-- ){ $.enemies[ i ].render( i ) }
         $.hero.update()
         $.hero.render()
         $.ctxmg.restore()
         $.renderMinimap()
+        $.spawnEnemies();
+        $.enemyOffsetMod += ( $.slow ) ? $.dt / 3 : $.dt;
+
+        $.tick += $.dt;
 
     }
 }
+
+/*==============================================================================
+Enemy Spawning
+==============================================================================*/
+$.getSpawnCoordinates = function( radius ) {
+    var quadrant = Math.floor( $.util.rand( 0, 4 ) ),
+        x,
+        y,
+        start;
+    
+    if( quadrant === 0){
+        x = $.util.rand( 0, $.ww );
+        y = -radius;
+        start = 'top';
+    } else if( quadrant === 1 && false){
+        x = $.ww + radius;
+        y = $.util.rand( 0, $.wh );
+        start = 'right';
+    } else if( quadrant === 2 && false) {
+        x = $.util.rand( 0, $.ww );
+        y = $.wh + radius;
+        start = 'bottom';
+    } else {
+        if(false){
+            x = -radius;
+            y = $.util.rand( 0, $.wh );
+            start = 'left';
+        }
+    }
+
+    return { x: x, y: y, start: start };
+};
+
+
+$.spawnEnemy = function( type ) {
+    var params = $.definitions.enemies[ type ],
+        coordinates = $.getSpawnCoordinates( params.radius );
+    params.x = coordinates.x;
+    params.y = coordinates.y;
+    params.start = coordinates.start;
+    params.type = type;
+    return new $.Enemy( params );
+};
+
+
+$.spawnEnemies = function() {
+    var floorTick = Math.floor( $.tick );
+    for( var i = 0; i < $.level.distributionCount; i++ ) {
+        var timeCheck = $.level.distribution[ i ];		
+        if( $.levelDiffOffset > 0 ){
+            timeCheck = Math.max( 1, timeCheck - ( $.levelDiffOffset * 2) );
+        }
+        if( floorTick % timeCheck === 0 ) {
+            $.enemies.push( $.spawnEnemy( i ) );
+        }
+    }
+};
+
+
 
 $.renderMinimap = function() {
     $.ctxmg.fillStyle = $.minimap.color;
@@ -551,23 +632,36 @@ $.mouseupcb = function( e ) {
 $.keydowncb = function( e ) {
     var e = ( e.keyCode ? e.keyCode : e.which );
     if( e === 38 || e === 87 ){ $.keys.state.up = 1; }
-    if( e === 39 || e === 68 ){ $.keys.state.right = 1; }
+    if( e === 66 || e === 78 || e === 77 || e === 188 || e === 39 ){ $.keys.state.right = 1; }
     if( e === 40 || e === 83 ){ $.keys.state.down = 1; }
-    if( e === 37 || e === 65 ){ $.keys.state.left = 1; }
+    if( e === 90 || e === 88 || e === 67 || e === 37 || e === 86 ){ $.keys.state.left = 1; }
+    if( e === 65 ){ $.keys.state.a = 1; }
+    if( e === 83 ){ $.keys.state.s = 1; }
+    if( e === 68 ){ $.keys.state.d = 1; }
     if( e === 70 ){ $.keys.state.f = 1; }
-    if( e === 77 ){ $.keys.state.m = 1; }
-    if( e === 80 ){ $.keys.state.p = 1; }
+    if( e === 71 ){ $.keys.state.g = 1; }
+    if( e === 72 ){ $.keys.state.h = 1; }
+    if( e === 74 ){ $.keys.state.j = 1; }
+    if( e === 75 ){ $.keys.state.k = 1; }
+    if( e === 76 ){ $.keys.state.l = 1; }
 }
 
 $.keyupcb = function( e ) {
     var e = ( e.keyCode ? e.keyCode : e.which );
     if( e === 38 || e === 87 ){ $.keys.state.up = 0; }
-    if( e === 39 || e === 68 ){ $.keys.state.right = 0; }
     if( e === 40 || e === 83 ){ $.keys.state.down = 0; }
-    if( e === 37 || e === 65 ){ $.keys.state.left = 0; }
+    if( e === 66 || e === 78 || e === 77 || e === 188 || e === 39 ){ $.keys.state.right = 0; }
+    if( e === 90 || e === 88 || e === 67 || e === 37 || e === 86 ){ $.keys.state.left = 0; }
+    if( e === 65 ){ $.keys.state.a = 0; }
+    if( e === 83 ){ $.keys.state.s = 0; }
+    if( e === 68 ){ $.keys.state.d = 0; }
     if( e === 70 ){ $.keys.state.f = 0; }
-    if( e === 77 ){ $.keys.state.m = 0; }
-    if( e === 80 ){ $.keys.state.p = 0; }
+    if( e === 71 ){ $.keys.state.g = 0; }
+    if( e === 72 ){ $.keys.state.h = 0; }
+    if( e === 74 ){ $.keys.state.j = 0; }
+    if( e === 75 ){ $.keys.state.k = 0; }
+    if( e === 76 ){ $.keys.state.l = 0; }
+
 }
 
 $.resizecb = function( e ) {

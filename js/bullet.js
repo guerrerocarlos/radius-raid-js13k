@@ -5,6 +5,7 @@ $.Bullet = function( opt ) {
     for( var k in opt ) {
         this[k] = opt[k];
     }
+    //console.log('new bullet at ',opt)
     this.enemiesHit = [];
     this.inView = 0;
     $.particleEmitters.push( new $.ParticleEmitter( {
