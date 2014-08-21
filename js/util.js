@@ -97,5 +97,9 @@ $.util.commas = function( nStr ) {
 
 
 $.util.isset = function( prop ) {
-    return typeof prop != 'undefined';
+  return typeof prop != 'undefined';
 };
+
+$.util.random = function(min,max){
+  return Math.random() * (max - min) + min;
+}

@@ -12,6 +12,16 @@ $.Enemy = function( opt ) {
     this.saturation = $.util.isset( this.saturation ) ? this.saturation : 100;
     this.setup = this.setup || function(){};
     this.death = this.death || function(){};
+    this.verticesDistances = []
+    this.buildIt = this.buildIt || function(){
+        for(i=0;i<10;i++){
+            var point = {}
+            point.angle = $.util.random(2*$.pi/10*i, 2*$.pi/10*i+$.pi/10)
+            point.dist = $.util.random(this.radius/10,this.radius)
+            this.verticesDistances.push(point)
+        }
+    };
+    this.buildIt()
 
     // set same for all objects
     this.index = $.indexGlobal++;
@@ -105,7 +115,7 @@ $.Enemy.prototype.receiveDamage = function( i, val ) {
                 hue: this.hue,
                 saturation: this.saturation,
                 lightness: 60
-            } ) );			
+            } ) );
             $.rumble.level = 6;
         }
         this.death();
@@ -114,7 +124,7 @@ $.Enemy.prototype.receiveDamage = function( i, val ) {
         $.level.kills++;
         $.kills++;
         $.enemies.splice( i, 1 );
-    } 
+    }
 };
 
 /*==============================================================================

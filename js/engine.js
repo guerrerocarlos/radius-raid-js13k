@@ -344,7 +344,7 @@ $.getSpawnCoordinates = function( radius ) {
         start;
     
     if( quadrant === 0){
-        x = $.util.rand( 0, $.ww );
+        x = $.util.rand( 0+40, $.ww-40 );
         y = -radius;
         start = 'top';
     } else if( quadrant === 1 && false){
@@ -381,7 +381,7 @@ $.spawnEnemy = function( type ) {
 $.spawnEnemies = function() {
     var floorTick = Math.floor( $.tick );
     for( var i = 0; i < $.level.distributionCount; i++ ) {
-        var timeCheck = $.level.distribution[ i ];		
+        var timeCheck = $.level.distribution[ i ];
         if( $.levelDiffOffset > 0 ){
             timeCheck = Math.max( 1, timeCheck - ( $.levelDiffOffset * 2) );
         }

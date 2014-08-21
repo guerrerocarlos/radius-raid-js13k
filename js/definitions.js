@@ -93,7 +93,7 @@ $.definitions.enemies = [
         lockBounds: 1,
         setup: function() {
             if( this.start == 'top' ){
-                this.direction = $.pi / 2;
+                this.direction = $.pi / 2 * Math.random(0,0.25)*$.pi-$.pi*0.25/2;
             } else if( this.start == 'right' ) {
                 this.direction = -$.pi;
             } else if( this.start == 'bottom' ) {
@@ -482,10 +482,11 @@ for( var i = 0; i < $.definitions.enemies.length; i++ ){
         distribution.push( value );
     }
     $.definitions.levels.push( {
-        killsToLevel: 10 + ( i + 1 ) * 7,
+        killsToLevel: 1 + ( i + 1 ) * 2,
         distribution: distribution
     } );
 }
+console.log($.definitions.levels)
 
 /*==============================================================================
 Powerups
